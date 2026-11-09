@@ -1,12 +1,22 @@
-import { login } from "../../apiFacade.js";
+// import { login } from "../../apiFacade.js";
+import { useAuth } from "../hooks/useAuth.js";
 
-function Login() {
-  const handlesubmit = (evt) => {
+function Login({ setErrorMsg, auth}) {
+  const handlesubmit = async (evt) => {
     evt.preventDefault();
     const form = evt.target;
     const formObject = Object.fromEntries(new FormData(form));
     console.log(formObject);
-    login(formObject.username, formObject.password);
+
+    try {
+      // const username = await login(formObject.username, formObject.password);
+
+    await auth.signIn(formObject.username, formObject.password);
+      // auth.setUsername(username);
+    } catch (error) {
+      console.error("MESSAGE: ", error.message);
+      setErrorMsg(error);
+    }
   };
 
   return (
